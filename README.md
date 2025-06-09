@@ -20,20 +20,6 @@ Poznámky je bezpečná webová aplikace pro ukládání a sdílení šifrovaný
 - **Background tasky**: Celery s Redis
 - **Frontend**: Bootstrap, Jinja2 templates
 
-<!-- Option 1: HTML5 video tag with audio (works in some Markdown renderers) -->
-<video controls src="demo-video.mp4" title="Ukázka aplikace Poznámky" width="640" height="360">
-  Váš prohlížeč nepodporuje přehrávání videa.
-</video>
-
-<!-- Option 2: GitHub-specific animated GIF with link to full video -->
-![Ukázka aplikace](demo.gif)
-➡️ [Klikněte pro zhlédnutí videa s audio komentářem](https://youtu.be/YOUR_VIDEO_ID)
-
-<!-- Option 3: YouTube embed (works in some Markdown renderers) -->
-<a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID">
-  <img src="thumbnail.jpg" alt="Ukázka aplikace Poznámky" width="640" height="360">
-</a>
-
 ## Instalace
 
 1. Klonujte repozitář:
