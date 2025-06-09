@@ -10,35 +10,42 @@ from app.utils.crypto import AESCipher
 api = Blueprint('api', __name__, url_prefix='/api')
 
 @api.route('/login', methods=['POST'])
-@limiter.limit("5 per minute")
+@limiter.limit("5 per minute")  # Omezení na 5 pokusů o přihlášení za minutu (prevence brute-force)
 def login():
+    """API endpoint pro přihlášení a získání JWT tokenu"""
     if not request.is_json:
         return jsonify({"error": "Missing JSON in request"}), 400
     
+    # Načtení přihlašovacích údajů z požadavku
     email = request.json.get('email', None)
     password = request.json.get('password', None)
     
+    # Ověření, že byly zadány všechny údaje
     if not email or not password:
         return jsonify({"error": "Missing email or password"}), 400
     
+    # Ověření uživatele proti databázi
     user = User.query.filter_by(email=email).first()
     if not user or not user.check_password(password):
         return jsonify({"error": "Invalid credentials"}), 401
     
-    # Create access token
+    # Vytvoření JWT access tokenu pro autentizaci dalších požadavků
     access_token = create_access_token(identity=user.id)
     return jsonify(access_token=access_token), 200
 
 @api.route('/notes', methods=['GET'])
-@jwt_required()
-@limiter.limit("60 per minute")
+@jwt_required()  # Vyžaduje platný JWT token
+@limiter.limit("60 per minute")  # Omezení počtu požadavků
 def get_notes():
+    """API endpoint pro získání seznamu poznámek přihlášeného uživatele"""
+    # Získání ID uživatele z JWT tokenu
     user_id = get_jwt_identity()
     notes = Note.query.filter_by(user_id=user_id, is_one_time=False).all()
     
-    # Filter out expired notes
+    # Odfiltrování expirovaných poznámek
     active_notes = [note for note in notes if not note.is_expired]
     
+    # Vytvoření seznamu poznámek ve formátu JSON
     result = []
     for note in active_notes:
         result.append({
