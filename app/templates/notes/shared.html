@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Shared Note</h5>
+                {% if note.is_one_time %}
+                    <div class="alert alert-warning mt-2 mb-0">
+                        <strong>Warning:</strong> This is a one-time note and will be deleted after you close it.
+                    </div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="note-content p-3 bg-light rounded">
+                    <pre style="white-space: pre-wrap;">{{ content }}</pre>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Go to Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

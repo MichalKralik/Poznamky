@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h1 class="mb-4">Create New Note</h1>
+        <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content.label }}
+                {{ form.content(class="form-control", rows=10) }}
+                {% for error in form.content.errors %}
+                <small class="text-danger">{{ error }}</small>
+                {% endfor %}
+            </div>
+            <div class="form-group">
+                {{ form.expiration.label }}
+                {{ form.expiration(class="form-control") }}
+            </div>
+            <div class="form-check mb-3">
+                {{ form.is_one_time(class="form-check-input") }}
+                {{ form.is_one_time.label(class="form-check-label") }}
+                <small class="form-text text-muted">If checked, the note will be deleted after it's read once.</small>
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+                <a href="{{ url_for('notes.index') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

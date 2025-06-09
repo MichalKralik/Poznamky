@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1>My Notes</h1>
+        <a href="{{ url_for('notes.create') }}" class="btn btn-primary">Create New Note</a>
+    </div>
+</div>
+
+<div class="row">
+    {% if notes %}
+        {% for note in notes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Note #{{ note.id }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Created: {{ note.created_at.strftime('%Y-%m-%d %H:%M') }}</h6>
+                        {% if note.expires_at %}
+                            <p class="card-text text-danger">Expires: {{ note.expires_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                        {% else %}
+                            <p class="card-text text-success">No expiration</p>
+                        {% endif %}
+                        {% if note.is_one_time %}
+                            <p class="card-text"><span class="badge badge-warning">One-time note</span></p>
+                        {% endif %}
+                        <a href="{{ url_for('notes.view', id=note.id) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ url_for('notes.delete', id=note.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-md-12">
+            <div class="alert alert-info">You don't have any notes yet.</div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
